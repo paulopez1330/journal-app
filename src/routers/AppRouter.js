@@ -15,6 +15,8 @@ import { JournalScreen } from '../components/journal/JournalScreen';
 
 import { login } from '../actions/auth';
 
+import { startLoadingNotes } from '../actions/notes';
+
 export const AppRouter = () => {
   
   const dispatch = useDispatch();
@@ -27,9 +29,13 @@ export const AppRouter = () => {
     firebase.auth().onAuthStateChanged((user) => {
       
       if( user?.uid ) {
+        
         dispatch( login( user.uid, user.displayName ) );
         setIsLoggedIn( true );
+        dispatch( startLoadingNotes( user.uid ) );
+
       } else {
+        
         setIsLoggedIn( false );
       }
 
